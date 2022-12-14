@@ -88,7 +88,8 @@ function isNotPast(req, res, next){
     next();
 };
 
-/////// crudl operations
+
+///////////////////////////////// crudl operations /////////////////////////////
 async function list(req, res) {
   console.log(req.params)
   res.json({
