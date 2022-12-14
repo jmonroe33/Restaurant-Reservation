@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { listReservations } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import MapReservations from "./MapReservations";
+import useHistory from "react-router-dom";
 
 /**
  * Defines the dashboard page.
@@ -30,8 +31,15 @@ function Dashboard({ date }) {
       <div className="d-md-flex mb-3">
         <h4 className="mb-0">Reservations for date</h4>
       </div>
+      <div>
+        <button className="btn btn-primary">Previous</button>
+        <button className="btn btn-secondary">Today</button>
+        <button className="btn btn-danger">next</button>
+      </div>
+        
         <ErrorAlert error={reservationsError} />
         <MapReservations reservations={ reservations }/>
+       
     </main>
   );
 }
