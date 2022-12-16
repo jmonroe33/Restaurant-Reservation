@@ -1,25 +1,18 @@
 import React from "react";
 
-function MapReservations({ reservations }) {
-
-    console.log(reservations)
-    let formatedReservations = reservations.map((reservation, index)=> (
-            <section className="card" key={index} >
-                <div className="d-flex">
-                    <p>{reservation.first_name}</p>
-                    <p>{reservation.last_name}</p> 
-                </div> 
-                <p>{reservation.mobile_number}</p>
-                <p>{reservation.reservation_date}</p>
-                <p>{reservation.reservation_time}</p>
-                <p>{reservation.people}</p>
-            </section>
-    ))
-
+function MapReservations({ reservation }) {
+    
     return (
-        <div>
-            {formatedReservations}
-        </div>
+        <tr>
+            <td>{reservation.reservation_id}</td>
+            <td>{reservation.last_name}, {reservation.first_name}</td>        
+            <td>{reservation.mobile_number}</td>
+            <td>{reservation.reservation_date}</td>
+            <td>{reservation.reservation_time}</td>
+            <td>{reservation.people}</td>
+        </tr>        
+   
+    
 
     )
 
