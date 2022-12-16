@@ -77,9 +77,10 @@ function isNotTuesday(req, res, next){
 };
 // checks to see if the dat is in the past 
 function isNotPast(req, res, next){
- const date = new Date()
-  const day = res.locals.day;
-    if(day < date){
+ const Now = new Date()
+  const date = res.locals.date;
+  console.log(date)
+    if(date < Now){
       next({
         status: 400,
         message: "must be scheduled for a future date"
@@ -91,10 +92,25 @@ function isNotPast(req, res, next){
 
 ///////////////////////////////// crudl operations /////////////////////////////
 async function list(req, res) {
-  console.log(req.params)
-  res.json({
-    data: await service.list()
-  });
+  const queryDate = req.query.date
+  const data = await service.list()
+  const newData = data.filter(
+    ({ reservation_date: date }) => JSON.stringify(date).slice(1,11) == queryDate
+  )
+  newData.sort((a, b) => {
+    let c = a.reservation_time
+    let d = b.reservation_time
+    if(c > d){
+      return 1
+    } else if (c === d) {
+      return 0
+    } else {
+      return -1
+    }
+
+  })
+
+  res.json({ data: newData });
 };
 
 async function create(req, res,) {
