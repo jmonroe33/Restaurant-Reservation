@@ -86,3 +86,17 @@ export async function tablesList(signal) {
   const url = new URL(`${API_BASE_URL}/tables`)
   return await fetchJson(url, { headers, signal }, [])
 }
+
+export async function createTable(newTable){
+  const abortController = new AbortController()
+  const url = `${API_BASE_URL}/tables`
+  const signal = abortController.signal
+  const options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ data : newTable})
+  }
+  await fetchJson(url, options, signal)
+}
