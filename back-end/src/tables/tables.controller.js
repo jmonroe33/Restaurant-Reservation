@@ -9,11 +9,11 @@ const VALID_PROPERTIES = [
     "table_name",
     "capacity",
   ]
-const hasValidProperties = hasProperties(VALID_PROPERTIES)
+const hasValidProperties = hasProperties(...VALID_PROPERTIES)
 
 function validateTableName(req, res, next){
     const tableName = req.body.data.table_name
-    if(tableName <= 1){
+    if(tableName.length <= 1){
         next({
             status:400,
             message: "table_name is too short"
@@ -22,7 +22,16 @@ function validateTableName(req, res, next){
     next()
 }
 
-
+function validateCapactity(req, res, next){
+    const capacity = req.body.data.capacity;
+    if(Number.isNaN(capacity)){
+         next({
+            status:400,
+            message: "capacity is invalid"
+        })
+    }
+    next()    
+}
 
 
 /////////////////////////// Crudl Ops /////////////////////////////
@@ -50,6 +59,7 @@ module.exports = {
     create: [
         hasValidProperties,
         validateTableName,
+        validateCapactity,
         asyncErrorBoundary(create)
     ],
 }
