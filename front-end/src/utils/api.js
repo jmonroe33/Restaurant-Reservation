@@ -68,7 +68,7 @@ export async function listReservations(params, signal) {
     .then(formatReservationTime);
 }
 
- export async function createReservation(reservation){
+ export async function createReservation(reservation) {
   const abortController = new AbortController()
   const url = `${API_BASE_URL}/reservations/new`
   const signal = abortController.signal
@@ -80,4 +80,9 @@ export async function listReservations(params, signal) {
     body: JSON.stringify({ data: reservation })
   }
   await fetchJson(url, options, signal)
+}
+
+export async function tablesList(signal) {
+  const url = new URL(`${API_BASE_URL}/tables`)
+  return await fetchJson(url, { headers, signal }, [])
 }
