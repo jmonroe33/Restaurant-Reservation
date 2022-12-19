@@ -70,7 +70,7 @@ export async function listReservations(params, signal) {
 
  export async function createReservation(reservation) {
   const abortController = new AbortController()
-  const url = `${API_BASE_URL}/reservations/new`
+  const url = `${API_BASE_URL}/reservations`
   const signal = abortController.signal
   const options = {
     method: "POST",

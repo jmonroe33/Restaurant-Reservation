@@ -24,8 +24,8 @@ function validateTableName(req, res, next){
 
 function validateCapactity(req, res, next){
     const capacity = req.body.data.capacity;
-    if(Number.isNaN(capacity)){
-         next({
+    if(typeof capacity !== "number"){
+        next({
             status:400,
             message: "capacity is invalid"
         })

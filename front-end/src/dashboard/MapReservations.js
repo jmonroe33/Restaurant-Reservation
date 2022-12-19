@@ -10,6 +10,7 @@ function MapReservations({ reservation }) {
             <td>{reservation.reservation_date}</td>
             <td>{reservation.reservation_time}</td>
             <td>{reservation.people}</td>
+            <td><button className="btn btn-primary">Seat</button></td>
         </tr>        
    
     
