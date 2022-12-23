@@ -14,22 +14,22 @@ router
   .put(controller.update)
   .all(methodNotAllowed);
 
-  //status
+//status
 router
   .route("/:reservation_id/status")
   .get(controller.read)
   .put(controller.updateStatus)
   .all(methodNotAllowed);
 
-  //reservation_id
+//reservation_id
 router
   .route("/:reservation_id")
   .get(controller.read)
   .put(controller.update)
   .all(methodNotAllowed);
-  
+
 //home
-  router
+router
   .route("/")
   .get(controller.list)
   .post(controller.create)
