@@ -75,24 +75,50 @@ function isValidNumber(req, res, next) {
 function isValidDate(req, res, next) {
   const { data = {} } = req.body;
   const reservation_date = new Date(data["reservation_date"]);
+  const date = data.reservation_date
   const day = reservation_date.getUTCDay();
+  const newDate = new Date()
 
   if (isNaN(Date.parse(data["reservation_date"]))) {
-    return next({ status: 400, message: `Invalid reservation_date` });
+     next({ status: 400, message: `Invalid reservation_date` });
   }
   if (day === 2) {
-    return next({ status: 400, message: `Restaurant is closed on Tuesdays` });
+    next({ status: 400, message: `Restaurant is closed on Tuesdays` });
   }
-
-  //check to see if same day reservations can be made*****
-  if (reservation_date < new Date()) {
+  if (
+    JSON.stringify(date).slice(1, 11) < JSON.stringify(newDate).slice(1, 11) &&
+    JSON.stringify(date).slice(12, 24) < JSON.stringify(newDate).slice(12, 24)
+  ) {
     return next({
       status: 400,
-      message: `Reservation must be set in the future`,
-    });
+      message: `Reservation must be a future date.`
+    })
   }
   next();
 }
+
+function isNotPast(req, res, next){
+  const now = new Date()
+  const resTime = req.body.data.reservation_time;
+  const resDate = new Date(req.body.data.reservation_date)
+
+ 
+    // store the actuall reservation time in a variable 
+    // compare the two strings 
+    // make sure the current time is < reservation time 
+    if (resDate.toDateString() === now.toDateString() && resTime < `${now.getHours()}:${now.getMinutes()}`){
+       
+      return next()
+    }
+    if (resDate < now) {
+      next({
+        status: 400,
+        message: "must be scheduled for a future date"
+      });
+    };
+    next(); 
+}
+
 
 /**
  * Check "isTime" handler for reservation resources
@@ -174,7 +200,7 @@ async function update(req, res, next) {
   const data = await reservationsService.update(updatedReservation);
   res.status(200).json({ data });
 }
-// supppppp dudeeeeee
+
 async function updateStatus(req, res, next) {
   const updatedStatus = {
     ...req.body.data,
@@ -246,6 +272,7 @@ module.exports = {
     hasRequiredProperties,
     timeIsValid,
     isValidDate,
+    // isNotPast,
     isValidNumber,
     isTime,
     checkStatus,
