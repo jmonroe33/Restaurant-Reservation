@@ -3,13 +3,36 @@
  *
  * @type {Router}
  */
-const MethodNotAllowed = require("../errors/MethodNotAllowed")
+const methodNotAllowed = require("../errors/MethodNotAllowed")
 const router = require("express").Router();
 const controller = require("./reservations.controller");
 
+//edit
+router
+  .route("/:reservation_id/edit")
+  .get(controller.read)
+  .put(controller.update)
+  .all(methodNotAllowed);
 
-router.route("/")
-    .get(controller.list)
-    .post(controller.create)
-    .all(MethodNotAllowed)
+  //status
+router
+  .route("/:reservation_id/status")
+  .get(controller.read)
+  .put(controller.updateStatus)
+  .all(methodNotAllowed);
+
+  //reservation_id
+router
+  .route("/:reservation_id")
+  .get(controller.read)
+  .put(controller.update)
+  .all(methodNotAllowed);
+  
+//home
+  router
+  .route("/")
+  .get(controller.list)
+  .post(controller.create)
+  .all(methodNotAllowed);
+
 module.exports = router;
