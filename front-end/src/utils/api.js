@@ -153,3 +153,4 @@ export async function seatTable(reservation_id, table_id, signal) {
   };
   return await fetchJson(url, options);
 }
+
