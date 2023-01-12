@@ -46,11 +46,22 @@ function finishTable(table_id, reservation_id) {
     });
   }
 
+function findByName(tableName) {
+    return knex("tables")
+    .select("*")
+    .where({table_name: tableName}).first()
+}
+
+function destroy(table_id){
+    return knex("tables").where({ table_id }).del()
+}
+
 module.exports = {
     list,
     create,
     read,
     seatTable,
     finishTable,
-    
+    findByName,
+    destroy
 }

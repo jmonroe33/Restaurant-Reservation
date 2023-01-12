@@ -24,6 +24,18 @@ async function tablesExists(req, res, next) {
   }
 }
 
+async function tableNameExists(req, res, next) {
+  const { table_name } = req.body.data
+  const foundTable = await service.findByName(table_name)
+  if (foundTable) {
+    return next({
+      status:400,
+      message:"This table already exists"
+    })
+  }
+  next() 
+}
+
 async function reservationIdExists(req, res, next) {
   const resId = req.body.data.reservation_id;
 
@@ -104,6 +116,12 @@ async function finishTable(req, res) {
   res.status(200).json({ data });
 }
 
+async function destroyTable(req, res) {
+  const { table } = res.locals;
+  await service.destroy(table.table_id)
+  res.sendStatus(204)
+}
+
 async function seatTable(req, res) {
   const { table_id } = req.params;
   const { reservation_id } = req.body.data;
@@ -154,12 +172,14 @@ function isTableAlreadySeated(req, res, next) {
   next();
 }
 
+
 module.exports = {
   create: [
     hasRequiredProperties,
     hasValidFields,
     isValidNumber,
     isOneCharacter,
+    asyncErrorBoundary(tableNameExists),
     asyncErrorBoundary(create),
   ],
   read: [tablesExists, asyncErrorBoundary(read)],
@@ -177,4 +197,9 @@ module.exports = {
     asyncErrorBoundary(seatTable),
   ],
   list: asyncErrorBoundary(list),
+
+  destroy: [
+     asyncErrorBoundary(tablesExists),
+     destroyTable,
+  ]
 };

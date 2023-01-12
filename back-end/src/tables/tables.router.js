@@ -10,6 +10,7 @@ router.route("/:table_id/seat")
 router.route("/")
     .get(controller.list)
     .post(controller.create)
+    .delete(controller.destroy)
     .all(methodNotAllowed)
 
 module.exports = router
